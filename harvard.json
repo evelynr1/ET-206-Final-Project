@@ -1,73 +1,62 @@
-{
-    "info": {
-        "totalrecordsperquery": 10,
-        "totalrecords": 245685,
-        "pages": 24569,
-        "page": 2,
-        "next": "https://api.harvardartmuseums.org/object?apikey=11350617-fffa-4128-bd24-989dc42d7cfb&page=3&fields=accessionyear%2Cobjectnumber%2Cid",
-        "prev": "https://api.harvardartmuseums.org/object?apikey=11350617-fffa-4128-bd24-989dc42d7cfb&page=1&fields=accessionyear%2Cobjectnumber%2Cid",
-        "responsetime": "11 ms"
+[
+    {
+        "id": 1424,
+        "accessionyear": 2005,
+        "gender": false
     },
-    "records": [
-        {
-            "objectnumber": "ARCH.2007.9.31.3",
-            "accessionyear": null,
-            "imagepermissionlevel": 1,
-            "id": 350740
-        },
-        {
-            "objectnumber": "ARCH.2007.9.31.4",
-            "accessionyear": null,
-            "imagepermissionlevel": 1,
-            "id": 350741
-        },
-        {
-            "objectnumber": "ARCH.2007.9.31.5",
-            "accessionyear": null,
-            "imagepermissionlevel": 1,
-            "id": 350742
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.2",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350743
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.3",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350744
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.4",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350745
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.5",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350746
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.6",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350747
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.7",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350748
-        },
-        {
-            "objectnumber": "ARCH.2007.9.18.8",
-            "accessionyear": null,
-            "imagepermissionlevel": 0,
-            "id": 350749
-        }
-    ]
-}
+    {
+        "id": 1425,
+        "accessionyear": 2005,
+        "gender": false
+    },
+    {
+        "id": 1426,
+        "accessionyear": 2005,
+        "gender": false
+    },
+    {
+        "id": 1427,
+        "accessionyear": 2005,
+        "gender": false
+    },
+    {
+        "id": 1428,
+        "accessionyear": 1995,
+        "gender": false
+    },
+    {
+        "id": 1429,
+        "accessionyear": 2006,
+        "gender": false
+    },
+    {
+        "id": 1430,
+        "accessionyear": 2003,
+        "gender": false
+    },
+    {
+        "id": 1431,
+        "accessionyear": 2005,
+        "gender": false
+    },
+    {
+        "id": 1432,
+        "accessionyear": 2003,
+        "gender": false
+    },
+    {
+        "id": 1433,
+        "accessionyear": 2004,
+        "gender": false
+    },
+    {
+        "id": 1434,
+        "accessionyear": 2005,
+        "gender": false
+    },
+    {
+        "id": 1436,
+        "accessionyear": 2006,
+        "gender": false
+    }
+]

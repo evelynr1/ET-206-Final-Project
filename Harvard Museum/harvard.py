@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import regex as re
 
-def get_api_key(filename):
+def get_harvard_api_key(filename):
     '''Input: filename where the API key is stored
     
     Output: api_key as a string
@@ -14,26 +14,62 @@ def get_api_key(filename):
     # with open(full_path) as f:
     with open(filename) as f:
         return f.read()
+    
+# def set_up_art_database():
+#     pass
 
-def call_api(harvard_api_key):
-    r = requests.get('https://api.harvardartmuseums.org/object',
+# def create_pieces_of_art_table(cur, conn):
+#     pass
+
+def get_art_data(harvard_api_key):
+    art_list = []
+    request = requests.get('https://api.harvardartmuseums.org/object',
         params = {
             'apikey': harvard_api_key,
-            'page' : 2,
-            'fields': 'accessionyear,objectnumber,id'
+            'page' : 1,
+            'fields': 'accessionyear,objectnumber,people,id'
         })
-    #print(r.status_code, r.json())
+    json_data = request.json()
+    num_of_pages = json_data['info']['pages']
+    # for page_num in range(1, num_of_pages+1):
+    for page_num in range(1,5):
+        r = requests.get('https://api.harvardartmuseums.org/object',
+        params = {
+            'apikey': harvard_api_key,
+            'page' : page_num,
+            'fields': 'accessionyear,people,id'
+        })
+        page_data = r.json()
+        print(page_data)
+        for d in page_data['records']:
+            art_dict = {}
+            id = d['id']
+            accessionyear = d['accessionyear']
+            #only adding the art to the dictionary if the accession year is not None
+            if accessionyear:
+                people = d.get('people')
+                female = False
+                if people:
+                    for p in people:
+                        if p['gender'] == 'female':
+                            female = True
+                art_dict['id'] = id
+                art_dict['accessionyear'] = accessionyear
+                art_dict['gender'] = female
+                art_list.append(art_dict)
+    print(art_list)
+    return art_list
 
-    json_data = r.json()
+    # for record in json_data["records"]:
+    #     print(record['id'])
+    
 
-    with open("harvard.json", 'w') as outfile:
+##GO THROUGH EACH PAGE AND GET ALL THE OBJECT DATA AND THE ARTIST GENDER 
+## AND THEN ADD TO JSON file
+
+def write_data_to_file(json_data, filename):
+    with open(filename, 'w') as outfile:
         json.dump(json_data, outfile, indent = 4)
-
-    print(type(json_data))
-    print(json_data['info']['pages'])
-
-    for record in json_data["records"]:
-        print(record['id'])
 
 
 ##verification level
@@ -68,10 +104,16 @@ def find_harvard_directors():
 
 
 
+
 def main():
-    #harvard_api_key = get_harvard_api_key()
-    #call_api(harvard_api_key)
-    print(find_harvard_directors())
+    harvard_api_key = get_harvard_api_key("Harvard_API_KEY.txt")
+    data = get_art_data(harvard_api_key)
+    write_data_to_file(data, "harvard.json")
+    directors = find_harvard_directors()
+    write_data_to_file(directors, "harvard_directors.json")
+    
+
+
 
 if __name__ == "__main__":
     main()
