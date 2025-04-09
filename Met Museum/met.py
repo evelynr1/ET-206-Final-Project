@@ -13,7 +13,7 @@ def calling_api():
     'country': 'United States'
 
     }
-
+# lolol
     response = requests.get(base_url, params=params)
     
     if response.status_code == 200:
