@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 import re
 import os
-import unittest
 import requests
+import json
 
 
 
@@ -40,4 +40,12 @@ def load_wiki_results():
 
     return result
 
-print(load_wiki_results())
+data = load_wiki_results()
+
+def create_file_from_json_data(filename, data):
+
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile, indent = 4)
+
+create_file_from_json_data('met_directors.json', data)
+

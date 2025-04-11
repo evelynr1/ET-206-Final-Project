@@ -57,7 +57,7 @@ def get_art_data(harvard_api_key):
                 art_dict['accessionyear'] = accessionyear
                 art_dict['gender'] = female
                 art_list.append(art_dict)
-    print(art_list)
+    #print(art_list)
     return art_list
 
     # for record in json_data["records"]:
