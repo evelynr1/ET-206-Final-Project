@@ -10,12 +10,12 @@ def set_up_database(db_name):
 
 def create_gender_table(conn, cur):
     genders = ['Female', 'Male/Unknown']
-    cur.execute('''CREATE TABLE IF NOT EXISTS Gender
+    cur.execute('''CREATE TABLE IF NOT EXISTS Genders
     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
     gender TEXT UNIQUE)'''
     )
     for gender in genders:
-        cur.execute('''INSERT OR IGNORE INTO Gender (gender)
+        cur.execute('''INSERT OR IGNORE INTO Genders (gender)
         VALUES (?)''',
         (gender,))
 
@@ -76,10 +76,11 @@ def add_met_art_from_json(conn, cur, filename):
         content = json.load(file)
 
     for item in content:
-        gender = cur.execute(f'''SELECT id FROM Gender 
-        WHERE {item['artistGender']} = Gender''')
+        gender = item['artistGender']
+        gender_id = cur.execute(f'''SELECT id FROM Genders 
+        WHERE gender="gender"''')
         print(gender)
-        # genders = cur.execute('''SELECT * FROM Gender''')
+        # genders = cur.execute('''SELECT * FROM Genders''')
         # if item['artistGender'] == 'Female':
 
         # cur.execute('''INSERT OR IGNORE INTO MetArt (objectID,artistGender,accessionYear) VALUES (?,?,?)''',
