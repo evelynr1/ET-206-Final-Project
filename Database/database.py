@@ -78,11 +78,12 @@ def add_met_art_from_json(conn, cur, filename):
     for item in content:
         gender = cur.execute(f'''SELECT id FROM Gender 
         WHERE {item['artistGender']} = Gender''')
+        print(gender)
         # genders = cur.execute('''SELECT * FROM Gender''')
         # if item['artistGender'] == 'Female':
 
-        cur.execute('''INSERT OR IGNORE INTO MetArt (objectID,artistGender,accessionYear) VALUES (?,?,?)''',
-        (item['objectID'], gender, item['accessionYear']))
+        # cur.execute('''INSERT OR IGNORE INTO MetArt (objectID,artistGender,accessionYear) VALUES (?,?,?)''',
+        # (item['objectID'], gender, item['accessionYear']))
 
     conn.commit()
 
