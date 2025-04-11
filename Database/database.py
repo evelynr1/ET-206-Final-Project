@@ -22,13 +22,13 @@ def create_gender_table(conn, cur):
     conn.commit()
 
 def create_harvard_directors_table(conn, cur):
-    # cur.execute('''CREATE TABLE IF NOT EXISTS HarvardDirectors
-    #     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    #     name TEXT UNIQUE
-    #     start_year INTEGER
-    #     end_year INTEGER)'''
-    #     )
-    # conn.commit()
+    cur.execute('''CREATE TABLE IF NOT EXISTS HarvardDirectors
+        (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        name TEXT UNIQUE,
+        start_year INTEGER,
+        end_year INTEGER)'''
+        )
+    conn.commit()
 
     
 

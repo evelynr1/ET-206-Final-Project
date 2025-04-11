@@ -32,7 +32,7 @@ def get_art_data(harvard_api_key):
     json_data = request.json()
     num_of_pages = json_data['info']['pages']
     # for page_num in range(1, num_of_pages+1):
-    for page_num in range(1,5):
+    for page_num in range(1,20): # artificially choosing the number of pages retrieved to get 190 pieces of art rather than the whole catalog of ~25,000
         r = requests.get('https://api.harvardartmuseums.org/object',
         params = {
             'apikey': harvard_api_key,
