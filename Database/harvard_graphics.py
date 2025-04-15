@@ -34,91 +34,55 @@ def art_by_accession_year(conn, cur):
 
     return art_count_by_year
 
-def art_by_director(conn, cur):
-    names = []
-    director_dict = {}
-    director_names = cur.execute('''SELECT name 
-    FROM HarvardDirectors''').fetchall()
-    for item in director_names:
-        names.append(item[0])
-    print(names)
-    print(len(names))
+def art_by_gender(conn, cur):
+    #get the number of pieces of art by gender
+    cur.execute('''SELECT Genders.id, COUNT(*)
+    FROM Genders JOIN HarvardArt ON Genders.id = HarvardArt.artistGender
+    WHERE gender = ?
+    ''', ('Female',))
+    art_by_women = cur.fetchone()
+    #print(art_by_women)
+    cur.execute('''SELECT Genders.id, COUNT(*)
+    FROM Genders JOIN HarvardArt ON Genders.id = HarvardArt.artistGender
+    WHERE gender = ?
+    ''', ('Male/Unknown',))
+    art_by_men_or_unknown = cur.fetchone()
+    #print(art_by_men_or_unknown)
 
-
-    directors_all_art = cur.execute('''SELECT HD.name, COUNT(*) 
-                        FROM HarvardDirectors HD
-                        JOIN HarvardArt HA
-                        ON HA.accessionYear BETWEEN HD.start_year AND HD.end_year
-                        WHERE HA.artistGender IN (1,2)
-                        GROUP BY HD.name, HA.artistGender;
-                        ''').fetchall()
-
-    for item in directors_all_art:
-        director_dict[item[0]]
-        names.append(item[0])
-        counts.append(item[1])
-
-
-    labels = names
-    sizes = counts
-    colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue', 'cyan']
-    explode = (0, 0, 0, 0, 0)
+    #create the pie chart
+    labels = ['Female Artists', 'Male/Unknown Artists']
+    sizes = [art_by_women[1], art_by_men_or_unknown[1]]
+    colors = ['lightcoral', 'lightskyblue']
+    explode = (0.2, 0)
  
     plt.pie(sizes, explode=explode, labels=labels, colors=colors,
-        autopct='%1.1f%%', shadow=True, startangle=140)
+        autopct='%1.1f%%', shadow=False, startangle=175)
 
     plt.axis('equal')
-    plt.show()
-    
+    plt.title('Harvard Art Museum Pieces by Artist Gender')
 
-    pass
+    # save the pie chart
+    fig.savefig("harvard_art_by_gender.png")
+
+    # show the pie chart
+    plt.show()
+
+    return (art_by_women, art_by_men_or_unknown)
     
+def art_by_director(conn, cur):
+    pass
 
 
 def main(): 
+    # create the connection and cursor for the Art database
     dir = os.path.dirname(__file__)+ os.sep
     conn = sqlite3.connect(dir+'Art.db')
     cur = conn.cursor()
 
-    print(art_by_accession_year(conn, cur))
-    #art_by_director(conn, cur)
+    #art_by_accession_year(conn, cur)
+    #art_by_gender(conn, cur)
+    art_by_director(conn, cur)
+
 
 if __name__ == '__main__':
     main()
-
-
-# ####from class. make changes
-
-# # Data for plotting
-# y = []
-# x = []
-
-# # create the line graph
-# fig, ax = plt.subplots()
-# ax.pie(y, x)
-# ax.set_xlabel('x')
-# ax.set_ylabel('y')
-# ax.set_title('title')
-# #ax.grid()
-
-# # save the line graph
-# fig.savefig("test.png")
-
-# # show the line graph
-# plt.show()
-
-
-# import matplotlib.pyplot as plt
- 
-# # Data to plot
-# labels = ['Python', 'C++', 'Ruby', 'Java']
-# sizes = [215, 130, 245, 210]
-# colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
-# explode = (0.1, 0, 0, 0)  # explode 1st slice
- 
-# # Plot
-# plt.pie(sizes, explode=explode, labels=labels, colors=colors,
-#         autopct='%1.1f%%', shadow=True, startangle=140)
- 
-# plt.axis('equal')
-# plt.show()
