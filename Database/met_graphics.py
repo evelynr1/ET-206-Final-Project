@@ -149,7 +149,7 @@ def make_comparison_chart(harvard_dict, met_dict):
     plt.savefig("comparison_bar_chart.png")
     plt.show()
 
-def save_data_to_file(data_dict,  filename):
+def save_data_to_file(data_dict1, data_dict2, filename):
     '''
     Writes artist gender counts for each director to a txt file
 
@@ -159,7 +159,14 @@ def save_data_to_file(data_dict,  filename):
     '''
     with open(filename, 'w') as f:
         f.write(f"Met Director Calculations\n")
-        for director, counts in data_dict.items():
+        for director, counts in data_dict1.items():
+            f.write(f"{director}\n")
+            f.write(f"  Male Artists: {counts['Male Artists']}\n")
+            f.write(f"  Female Artists: {counts['Female Artists']}\n")
+            f.write("\n")
+
+        f.write(f"Harvard Director Calculations\n")
+        for director, counts in data_dict2.items():
             f.write(f"{director}\n")
             f.write(f"  Male Artists: {counts['Male Artists']}\n")
             f.write(f"  Female Artists: {counts['Female Artists']}\n")
@@ -174,11 +181,10 @@ def main():
     met_dict = get_data(conn, cur)
     harvard_dict = get_harvard_data(conn, cur)
 
-    # make_total_gender_pie(met_dict)
-    # make_bar_chart(met_dict)
-    # make_comparison_chart(harvard_dict, met_dict)
+    make_total_gender_pie(met_dict)
+    make_comparison_chart(harvard_dict, met_dict)
 
-    save_data_to_file(met_dict, 'calculations.txt')
+    save_data_to_file(met_dict, harvard_dict, 'calculations.txt')
 
 if __name__ == '__main__':
     main()
