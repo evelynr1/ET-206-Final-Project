@@ -30,14 +30,42 @@ def create_harvard_directors_table(conn, cur):
         )
     conn.commit()
 
-    
-
-    pass
-
 def add_harvard_directors_from_json(conn, cur, filename):
-    pass
+    with open(filename, 'r') as file:
+        content = json.load(file)
 
+    for item in content:
+        cur.execute('''INSERT OR IGNORE INTO HarvardDirectors (name,start_year,end_year) VALUES (?,?,?)''', 
+        (item['name'], item['start_year'], item['end_year']))
 
+    conn.commit()
+
+def create_harvard_art_table(conn, cur):
+    cur.execute('''CREATE TABLE IF NOT EXISTS HarvardArt
+        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        objectID INTEGER UNIQUE,
+        accessionYear INTEGER,
+        artistGender INTEGER)
+        ''')
+    conn.commit()
+
+def add_harvard_art_from_json(conn, cur, filename):
+    with open(filename, 'r') as f:
+        art = json.load(f)
+
+    for piece in art:
+        gender = piece['gender']
+        gender_id = cur.execute(f'''SELECT id FROM Genders 
+        WHERE gender=?''', (f"{gender}",)).fetchone()[0]
+
+        cur.execute('''INSERT OR IGNORE INTO HarvardArt 
+                    (objectID,
+                    artistGender,
+                    accessionYear) 
+                    VALUES (?,?,?)''', 
+                    (piece['id'], gender_id, piece['accessionyear']))
+
+    conn.commit()
 
 
 
@@ -91,6 +119,8 @@ def main():
     create_gender_table(conn, cur)
     create_harvard_directors_table(conn, cur)
     add_harvard_directors_from_json(conn, cur, "harvard_directors.json")
+    create_harvard_art_table(conn, cur)
+    add_harvard_art_from_json(conn, cur, "harvard.json")
     create_met_directors_table(conn, cur)
     add_met_directors_from_json(conn, cur, "met_directors.json")
     create_met_art_table(conn, cur)

@@ -14,15 +14,20 @@ def get_harvard_api_key(filename):
     # with open(full_path) as f:
     with open(filename) as f:
         return f.read()
-    
-# def set_up_art_database():
-#     pass
 
-# def create_pieces_of_art_table(cur, conn):
-#     pass
+##This function did not add meaningful data to the database
+# def get_verification_level(art_id, harvard_api_key):
+#     request = requests.get(f'https://api.harvardartmuseums.org/object/{art_id}',
+#         params = {
+#             'apikey': harvard_api_key,
+#             'fields': 'verificationlevel'
+#         })
+#     json_data = request.json()
+#     return json_data.get('verificationlevel')
 
 def get_art_data(harvard_api_key):
     art_list = []
+    #finding the total number of pages to determine how many times to call the API to get all the data
     request = requests.get('https://api.harvardartmuseums.org/object',
         params = {
             'apikey': harvard_api_key,
@@ -31,8 +36,10 @@ def get_art_data(harvard_api_key):
         })
     json_data = request.json()
     num_of_pages = json_data['info']['pages']
-    # for page_num in range(1, num_of_pages+1):
-    for page_num in range(1,20): # artificially choosing the number of pages retrieved to get 190 pieces of art rather than the whole catalog of ~25,000
+
+    ##GO THROUGH EACH PAGE AND GET ALL THE OBJECT DATA AND THE ARTIST GENDER 
+    # for page_num in range(1, num_of_pages+1): #loop through each possible page
+    for page_num in range(1,num_of_pages+1,200): # artificially choosing the number of pages retrieved to get less than 1,000 pieces of art rather than the whole catalog of ~25,000
         r = requests.get('https://api.harvardartmuseums.org/object',
         params = {
             'apikey': harvard_api_key,
@@ -40,40 +47,34 @@ def get_art_data(harvard_api_key):
             'fields': 'accessionyear,people,id'
         })
         page_data = r.json()
-        print(page_data)
+        #print(page_data)
         for d in page_data['records']:
             art_dict = {}
             id = d['id']
+            #verificationlevel = get_verification_level(id, harvard_api_key)
             accessionyear = d['accessionyear']
             #only adding the art to the dictionary if the accession year is not None
             if accessionyear:
                 people = d.get('people')
-                female = False
+                gender = 'Male/Unknown'
                 if people:
                     for p in people:
                         if p['gender'] == 'female':
-                            female = True
+                            gender = 'Female'
                 art_dict['id'] = id
+                #art_dict['verificationlevel'] = verificationlevel
                 art_dict['accessionyear'] = accessionyear
-                art_dict['gender'] = female
+                art_dict['gender'] = gender
                 art_list.append(art_dict)
     #print(art_list)
     return art_list
 
-    # for record in json_data["records"]:
-    #     print(record['id'])
-    
-
-##GO THROUGH EACH PAGE AND GET ALL THE OBJECT DATA AND THE ARTIST GENDER 
-## AND THEN ADD TO JSON file
-
 def write_data_to_file(json_data, filename):
+    '''Input:
+
+    '''
     with open(filename, 'w') as outfile:
         json.dump(json_data, outfile, indent = 4)
-
-
-##verification level
-##artist gender --> person id --> person API --> gender
 
 
 def find_harvard_directors():
