@@ -84,7 +84,7 @@ def art_by_gender(conn, cur):
     plt.title('Harvard Art Museum Pieces by Artist Gender')
 
     # save the pie chart
-    fig.savefig("harvard_art_by_gender.png")
+    # fig.savefig("harvard_art_by_gender.png")
 
     # show the pie chart
     plt.show()
@@ -124,8 +124,8 @@ def main():
     conn = sqlite3.connect(dir+'Art.db')
     cur = conn.cursor()
 
-    #art_by_accession_year(conn, cur)
-    #art_by_gender(conn, cur)
+    # art_by_accession_year(conn, cur)
+    art_by_gender(conn, cur)
     art_by_director(conn, cur)
 
 
