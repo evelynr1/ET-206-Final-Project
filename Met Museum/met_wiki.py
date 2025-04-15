@@ -7,6 +7,13 @@ import json
 
 
 def load_wiki_results():
+    '''
+    Scrapes Wikipedia page for list of Met directors,
+    extracting each director's name, start year, and end year of tenure
+
+    Returns:
+        list: list of dictionaries with director name, start year, and end year
+    '''
 
     url = 'https://en.wikipedia.org/wiki/List_of_directors_of_the_Metropolitan_Museum_of_Art'
 
@@ -43,6 +50,13 @@ def load_wiki_results():
 data = load_wiki_results()
 
 def create_file_from_json_data(filename, data):
+    '''
+    Saves data to a JSON file
+
+    Args:
+        filename (str): name of the file to write data to
+        data (dict): data to be written into JSON file
+    '''
 
     with open(filename, 'w') as outfile:
         json.dump(data, outfile, indent = 4)
