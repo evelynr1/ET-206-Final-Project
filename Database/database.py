@@ -3,12 +3,14 @@ import json
 import sqlite3
 
 def set_up_database(db_name):
+    '''Sets up the database. Returns the connection (conn) and cursor (cur)'''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path + "/" + db_name)
     cur = conn.cursor()
     return(conn, cur)
 
 def create_gender_table(conn, cur):
+    '''Creates the Genders table within the database using the input connection (conn) and cursor (cur)'''
     genders = ['Female', 'Male/Unknown']
     cur.execute('''CREATE TABLE IF NOT EXISTS Genders
     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -22,6 +24,7 @@ def create_gender_table(conn, cur):
     conn.commit()
 
 def create_harvard_directors_table(conn, cur):
+    '''Creates the HarvardDirectors table within the database using the input connection (conn) and cursor (cur)'''
     cur.execute('''CREATE TABLE IF NOT EXISTS HarvardDirectors
         (id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT UNIQUE,
@@ -41,6 +44,7 @@ def add_harvard_directors_from_json(conn, cur, filename):
     conn.commit()
 
 def create_harvard_art_table(conn, cur):
+    '''Creates the HarvardArt table within the database using the input connection (conn) and cursor (cur)'''
     cur.execute('''CREATE TABLE IF NOT EXISTS HarvardArt
         (id INTEGER PRIMARY KEY AUTOINCREMENT,
         objectID INTEGER UNIQUE,
@@ -70,6 +74,7 @@ def add_harvard_art_from_json(conn, cur, filename):
 
 
 def create_met_directors_table(conn, cur):
+    '''Creates the MetDirectors table within the database using the input connection (conn) and cursor (cur)'''
     cur.execute('''CREATE TABLE IF NOT EXISTS MetDirectors
         (id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT UNIQUE,
@@ -90,7 +95,7 @@ def add_met_directors_from_json(conn, cur, filename):
     conn.commit()
 
 def create_met_art_table(conn, cur):
-
+    '''Creates the MetArt table within the database using the input connection (conn) and cursor (cur)'''
     cur.execute('''CREATE TABLE IF NOT EXISTS MetArt
         (id INTEGER PRIMARY KEY AUTOINCREMENT,
         objectID INTEGER UNIQUE,
@@ -115,6 +120,7 @@ def add_met_art_from_json(conn, cur, filename):
     conn.commit()
 
 def main():
+    '''Sets up the database, adds all 5 tables and fills them with data from 4 JSON files'''
     conn, cur = set_up_database("Art.db")
     create_gender_table(conn, cur)
     create_harvard_directors_table(conn, cur)

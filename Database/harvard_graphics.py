@@ -6,6 +6,16 @@ import matplotlib.pyplot as plt
 
 
 def art_by_accession_year(conn, cur):
+    '''Creates a pie chart of number of pieces of art by gender at the Harvard Art Museums
+    using data from the HarvardArt database
+    
+    Args:
+        conn: connection to database
+        cur: cursor
+    
+    Output:
+        art_count_by_accession_year (dict): dictionary containing art count by accession year (ascending by chronological order)
+    '''
     art_count_by_year = {}
     years = cur.execute('''SELECT accessionyear 
     FROM HarvardArt''').fetchall()
@@ -35,6 +45,18 @@ def art_by_accession_year(conn, cur):
     return art_count_by_year
 
 def art_by_gender(conn, cur):
+    '''Creates a line plot of amount of art by accession year
+    using data from the HarvardArt database
+    
+    Args:
+        conn: connection to database
+        cur: cursor
+    
+    Output:
+        (art_by_women, art_by_men_or_unknown) (tuple): tuple containing art count by gender
+            art_by_women (tuple): (id of gender in database, count of art by women)
+            art_by_men_or_unknown (tuple): (id of gender in database, count of art by men/unkown)
+    '''
     #get the number of pieces of art by gender
     cur.execute('''SELECT Genders.id, COUNT(*)
     FROM Genders JOIN HarvardArt ON Genders.id = HarvardArt.artistGender
@@ -70,6 +92,29 @@ def art_by_gender(conn, cur):
     return (art_by_women, art_by_men_or_unknown)
     
 def art_by_director(conn, cur):
+    pass
+
+
+
+    # # Data for plotting
+    # y = []
+    # x = []
+
+    # # create the line graph
+    # fig, ax = plt.subplots()
+    # ax.bar(y, x)
+    # ax.set_xlabel('Director')
+    # ax.set_ylabel('Pieces of Art')
+    # ax.set_title('Amount of Art Acquired by Director at the Harvard Art Museum')
+    # #ax.grid()
+
+    # # save the line graph
+    # fig.savefig("harvard_art_by_director.png")
+
+    # # show the line graph
+    # plt.show()
+
+    # #return SOMETHING
     pass
 
 
