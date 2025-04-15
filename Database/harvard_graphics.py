@@ -72,6 +72,7 @@ def art_by_gender(conn, cur):
     #print(art_by_men_or_unknown)
 
     #create the pie chart
+    plt.figure(figsize=(8, 8))
     labels = ['Female Artists', 'Male/Unknown Artists']
     sizes = [art_by_women[1], art_by_men_or_unknown[1]]
     colors = ['lightcoral', 'lightskyblue']
@@ -84,39 +85,30 @@ def art_by_gender(conn, cur):
     plt.title('Harvard Art Museum Pieces by Artist Gender')
 
     # save the pie chart
-    # fig.savefig("harvard_art_by_gender.png")
+    plt.savefig("harvard_art_by_gender.png")
 
     # show the pie chart
     plt.show()
 
     return (art_by_women, art_by_men_or_unknown)
     
-def art_by_director(conn, cur):
+
+def write_calulations(art_by_year, art_by_women, art_by_men_or_unknown):
+    with open('calculations.txt', 'a') as f:
+        f.write(f"Harvard Art Museums Calculations\n")
+        f.write("\n")
+        f.write(f"Harvard Art by Accession Year\n")
+        for year, count in art_by_year.items():
+            f.write(f"  {year}: {count}\n")
+        f.write("\n")
+        f.write("Harvard Art by Artist Gender\n")
+        f.write(f"  Total Pieces of Art: {art_by_women[1]+art_by_men_or_unknown[1]}\n")
+        f.write(f"    Male Artists: {art_by_men_or_unknown[1]}\n")
+        f.write(f"    Female Artists: {art_by_women[1]}\n")
+        f.write("\n")
+    print("works")
     pass
-
-
-
-    # # Data for plotting
-    # y = []
-    # x = []
-
-    # # create the line graph
-    # fig, ax = plt.subplots()
-    # ax.bar(y, x)
-    # ax.set_xlabel('Director')
-    # ax.set_ylabel('Pieces of Art')
-    # ax.set_title('Amount of Art Acquired by Director at the Harvard Art Museum')
-    # #ax.grid()
-
-    # # save the line graph
-    # fig.savefig("harvard_art_by_director.png")
-
-    # # show the line graph
-    # plt.show()
-
-    # #return SOMETHING
-    pass
-
+    
 
 def main(): 
     # create the connection and cursor for the Art database
@@ -124,9 +116,9 @@ def main():
     conn = sqlite3.connect(dir+'Art.db')
     cur = conn.cursor()
 
-    # art_by_accession_year(conn, cur)
-    art_by_gender(conn, cur)
-    art_by_director(conn, cur)
+    art_by_year = art_by_accession_year(conn, cur)
+    art_by_women, art_by_men_or_unknown = art_by_gender(conn, cur)
+    write_calulations(art_by_year, art_by_women, art_by_men_or_unknown)
 
 
 if __name__ == '__main__':
