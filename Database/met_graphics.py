@@ -3,6 +3,17 @@ import sqlite3
 import os
 
 def get_data(con, cur):
+    '''
+    Gets and sorts artwork acquisition data (stored in database) by museum director and artist gender
+
+    Parameters:
+        con: connection object to SQLite database
+        cur: cursor object used to execute SQL queries
+
+    Returns:
+        dict: dictionary where each key is a director's name and the value is another
+              dictionary with keys 'Male Artists' and 'Female Artists' and their counts
+    '''
     director_dict = {}
     director_names = cur.execute('''SELECT name 
     FROM MetDirectors''').fetchall()
@@ -36,6 +47,18 @@ def get_data(con, cur):
     return director_dict
     
 def get_harvard_data(conn, cur):
+    '''
+    Gets and sorts artwork acquisition data (stored in database) by museum director and artist gender
+    (functionally same as get_data() above, just using Harvard tables)
+
+    Parameters:
+        con: connection object to SQLite database
+        cur: cursor object used to execute SQL queries
+
+    Returns:
+        dict: dictionary where each key is a director's name and the value is another
+              dictionary with keys 'Male Artists' and 'Female Artists' and their counts
+    '''
 
     director_dict = {}
     director_names = cur.execute('''SELECT name 
@@ -129,6 +152,16 @@ def make_total_gender_pie(director_dict):
 
 
 def make_comparison_chart(harvard_dict, met_dict):
+    '''
+    Makes and displays bar chart comparing number of artworks by male and female artists
+    between the Harvard and Met museums
+
+    Parameters:
+        harvard_dict (dict): dictionary with Harvard director names as keys and counts of male/female artworks as values
+        met_dict (dict): dictionary with Met director names as keys and counts of male/female artworks as values
+
+    Chart gets saved as 'comparison_bar_chart.png'
+    '''
     met_directors = list(met_dict.keys())
     harvard_directors = list(harvard_dict.keys())
 
@@ -156,6 +189,22 @@ def make_comparison_chart(harvard_dict, met_dict):
     plt.savefig("comparison_bar_chart.png")
     plt.show()
 
+def save_data_to_file(data_dict, filename):
+    '''
+    Writes artist gender counts for each director to a txt file
+
+    Parameters:
+        data_dict (dict): dictionary of directors with counts of artworks by gender
+        filename (str): name of txt file to write the data to
+    '''
+    with open(filename, 'w') as f:
+        for director, counts in data_dict.items():
+            f.write(f"{director}\n")
+            f.write(f"  Male Artists: {counts['Male Artists']}\n")
+            f.write(f"  Female Artists: {counts['Female Artists']}\n")
+            f.write("\n")
+
+
 def main(): 
     path = '/Users/tessakipke/SI_206/ET-206-Final-Project/Database'
     db_path = os.path.join(path, 'Art.db')
@@ -168,6 +217,8 @@ def main():
     make_total_gender_pie(met_dict)
     make_bar_chart(met_dict)
     make_comparison_chart(harvard_dict, met_dict)
+
+    save_data_to_file(met_dict, 'met_calculations.txt')
 
 if __name__ == '__main__':
     main()

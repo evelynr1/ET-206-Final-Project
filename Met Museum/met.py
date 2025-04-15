@@ -70,7 +70,7 @@ def create_file_from_json_data(filename, data):
 
 def main():
     '''
-    Fetches object IDs, gets their details,
+    Gets object IDs, gets their details,
     and saves results to a JSON file
     '''
     objectIDs = get_objectIDs()
