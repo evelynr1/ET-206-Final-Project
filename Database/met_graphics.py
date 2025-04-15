@@ -206,19 +206,18 @@ def save_data_to_file(data_dict, filename):
 
 
 def main(): 
-    path = '/Users/tessakipke/SI_206/ET-206-Final-Project/Database'
-    db_path = os.path.join(path, 'Art.db')
-    conn = sqlite3.connect(db_path)
+    dir = os.path.dirname(__file__)+ os.sep
+    conn = sqlite3.connect(dir+'Art.db')
     cur = conn.cursor()
 
     met_dict = get_data(conn, cur)
     harvard_dict = get_harvard_data(conn, cur)
 
     make_total_gender_pie(met_dict)
-    make_bar_chart(met_dict)
+    # make_bar_chart(met_dict)
     make_comparison_chart(harvard_dict, met_dict)
 
-    save_data_to_file(met_dict, 'met_calculations.txt')
+    # save_data_to_file(met_dict, 'met_calculations.txt')
 
 if __name__ == '__main__':
     main()
