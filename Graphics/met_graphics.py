@@ -6,37 +6,53 @@ def get_data(con, cur):
     director_dict = {}
     director_names = cur.execute('''SELECT name 
     FROM MetDirectors''').fetchall()
-    for item in director_names:
-        names.append(item[0])
-        names.append(item[0])
-    print(names)
-    print(len(names))
 
-
-    directors_all_art = cur.execute('''SELECT MetDirectors.name, COUNT(*) 
+    directors_male_art = cur.execute('''SELECT MetDirectors.name, COUNT(*) 
                         FROM MetDirectors
                         JOIN MetArt
                         ON MetArt.accessionYear BETWEEN MetDirectors.start_year AND MetDirectors.end_year
-                        WHERE MetArt.artistGender IN (1,2)
+                        WHERE MetArt.artistGender = 2
                         GROUP BY MetDirectors.name, MetArt.artistGender;
                         ''').fetchall()
 
-    for item in directors_all_art:
-        director_dict[item[0]]
-        names.append(item[0])
-        counts.append(item[1])
+    directors_female_art = cur.execute('''SELECT MetDirectors.name, COUNT(*) 
+                        FROM MetDirectors
+                        JOIN MetArt
+                        ON MetArt.accessionYear BETWEEN MetDirectors.start_year AND MetDirectors.end_year
+                        WHERE MetArt.artistGender = 1
+                        GROUP BY MetDirectors.name, MetArt.artistGender;
+                        ''').fetchall()
 
+    for name_tuple in director_names:
+        name = name_tuple[0]
+        director_dict[name] = {"Male Artists": 0, "Female Artists": 0}
 
-    labels = names
-    sizes = counts
-    colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue', 'cyan']
-    explode = (0, 0, 0, 0, 0)
- 
-    plt.pie(sizes, explode=explode, labels=labels, colors=colors,
-        autopct='%1.1f%%', shadow=True, startangle=140)
+    for name, count in directors_male_art:
+        director_dict[name]["Male Artists"] = count
 
-    plt.axis('equal')
+    for name, count in directors_female_art:
+        director_dict[name]["Female Artists"] = count
+
+    return director_dict
+
+def make_total_gender_pie(director_dict):
+    total_male = 0
+    total_female = 0
+
+    for counts in director_dict.values():
+        total_male += counts['Male Artists']
+        total_female += counts['Female Artists']
+
+    labels = ['Female Artists', 'Male Artists']
+    sizes = [total_female, total_male]
+    colors = ['firebrick', 'darkcyan']
+    explode = (0.1, 0)  
+
+    plt.figure(figsize=(8, 8))
+    plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', startangle=140)
+    plt.title('Metropolitan Museum Highlights by Artist Gender')
     plt.show()
+
 
 def main(): 
     path = '/Users/tessakipke/SI_206/ET-206-Final-Project/Database'
@@ -44,9 +60,10 @@ def main():
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
-    get_data(conn, cur)
+    director_dict = get_data(conn, cur)
+    make_total_gender_pie(director_dict)
+    make_bar_chart(director_dict)
 
-    
 
 if __name__ == '__main__':
     main()

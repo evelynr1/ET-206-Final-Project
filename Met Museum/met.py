@@ -13,7 +13,7 @@ def get_objectIDs():
 
     response = requests.get(base_url, params=params)
     data = response.json()
-    print(len(data['objectIDs']))
+    # print(len(data['objectIDs']))
     return data.get("objectIDs", [])  
 
 def get_object_details(objectIDs):
