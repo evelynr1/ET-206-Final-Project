@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 import regex as re
 
 def get_harvard_api_key(filename):
-    '''Input: filename where the API key is stored
+    '''Retrieves API key from file (so it is not shared publicly)
+    
+    Args: filename where the API key is stored
     
     Output: api_key as a string
     '''
@@ -26,6 +28,16 @@ def get_harvard_api_key(filename):
 #     return json_data.get('verificationlevel')
 
 def get_art_data(harvard_api_key):
+    '''
+    Retrieves list of art from Harvard Art Museums API 
+    including objectID, accession year, and artist gender
+
+    Args:
+        harvard_api_key (str): name of the file to write data to
+    
+    Returns:
+        art_list (list): list of dictionaries where each dictionary represents one piece of art
+    '''
     art_list = []
     #finding the total number of pages to determine how many times to call the API to get all the data
     request = requests.get('https://api.harvardartmuseums.org/object',
@@ -69,15 +81,14 @@ def get_art_data(harvard_api_key):
     #print(art_list)
     return art_list
 
-def write_data_to_file(json_data, filename):
-    '''Input:
-
-    '''
-    with open(filename, 'w') as outfile:
-        json.dump(json_data, outfile, indent = 4)
-
-
 def find_harvard_directors():
+    '''
+    Scrapes Wikipedia page for bulleted list of Harvard directors,
+    retrieves each director's name, start year, and end year
+
+    Returns:
+        directors_list: list of dictionaries with director name, start year, and end year
+    '''
     url = 'https://en.wikipedia.org/wiki/Harvard_Art_Museums'
     resp = requests.get(url)
     if resp.status_code == 200:
@@ -103,10 +114,23 @@ def find_harvard_directors():
         return directors_list
     return None
 
+def write_data_to_file(json_data, filename):
+    '''
+    Saves data to a JSON file
 
+    Args:
+        filename (str): name of the file to write data to
+        json_data (dict): data to be written into JSON file
+    '''
+    with open(filename, 'w') as outfile:
+        json.dump(json_data, outfile, indent = 4)
 
 
 def main():
+    '''
+    Retrieves API key, gets the art pieces and directors,
+    and saves results to separate JSON files
+    '''
     harvard_api_key = get_harvard_api_key("Harvard_API_KEY.txt")
     data = get_art_data(harvard_api_key)
     write_data_to_file(data, "harvard.json")
