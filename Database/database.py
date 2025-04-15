@@ -57,7 +57,10 @@ def add_harvard_art_from_json(conn, cur, filename):
     with open(filename, 'r') as f:
         art = json.load(f)
 
+    new_inserts = 0
     for piece in art:
+        if new_inserts >= 25:
+            break
         gender = piece['gender']
         gender_id = cur.execute(f'''SELECT id FROM Genders 
         WHERE gender=?''', (f"{gender}",)).fetchone()[0]
@@ -68,10 +71,10 @@ def add_harvard_art_from_json(conn, cur, filename):
                     accessionYear) 
                     VALUES (?,?,?)''', 
                     (piece['id'], gender_id, piece['accessionyear']))
+        if cur.rowcount == 1:
+            new_inserts += 1
 
     conn.commit()
-
-
 
 def create_met_directors_table(conn, cur):
     '''Creates the MetDirectors table within the database using the input connection (conn) and cursor (cur)'''
@@ -104,11 +107,13 @@ def create_met_art_table(conn, cur):
     conn.commit()
 
 def add_met_art_from_json(conn, cur, filename):
-
     with open(filename, 'r') as file:
         content = json.load(file)
 
+    new_inserts = 0
     for item in content:
+        if new_inserts >= 25:
+            break
         gender = item['artistGender']
         gender_id = cur.execute(f'''SELECT id FROM Genders 
         WHERE gender=?''', (f"{gender}",)).fetchall()
@@ -116,6 +121,9 @@ def add_met_art_from_json(conn, cur, filename):
 
         cur.execute('''INSERT OR IGNORE INTO MetArt (objectID,artistGender,accessionYear) VALUES (?,?,?)''',
         (item['objectID'], gender_id_int, item['accessionYear']))
+
+        if cur.rowcount == 1:
+            new_inserts += 1
 
     conn.commit()
 
@@ -126,11 +134,13 @@ def main():
     create_harvard_directors_table(conn, cur)
     add_harvard_directors_from_json(conn, cur, "harvard_directors.json")
     create_harvard_art_table(conn, cur)
-    add_harvard_art_from_json(conn, cur, "harvard.json")
+    for i in range(33):
+        add_harvard_art_from_json(conn, cur, "harvard.json")
     create_met_directors_table(conn, cur)
     add_met_directors_from_json(conn, cur, "met_directors.json")
     create_met_art_table(conn, cur)
-    add_met_art_from_json(conn, cur, "met.json")
+    for i in range(4):
+        add_met_art_from_json(conn, cur, "met.json")
 
 if __name__ == "__main__":
     main()

@@ -111,46 +111,6 @@ def make_total_gender_pie(director_dict):
     plt.savefig("met_pie_chart.png")
     plt.show()
 
-# def make_bar_chart(director_dict):
-#     directors = []
-#     female_counts = []
-#     male_counts = []
-
-#     for director in director_dict:
-#         directors.append(director)
-#         female_counts.append(director_dict[director]['Female Artists'])
-#         male_counts.append(director_dict[director]['Male Artists'])
-
-#     female_positions = []
-#     i = 0
-#     while i < 11:
-#         female_positions.append(i)
-#         i += 1
-
-#     male_positions = []
-#     j = 0
-#     while j < len(female_positions):
-#         male_positions.append(female_positions[j] + 0.4)
-#         j += 1
-
-#     mid_positions = []
-#     k = 0
-#     while k < len(female_positions):
-#         mid = female_positions[k] + 0.2
-#         mid_positions.append(mid)
-#         k += 1
-
-#     plt.figure(figsize=(14, 7))
-#     plt.bar(female_positions, female_counts, width=0.4, label='Female Artists', color='firebrick')
-#     plt.bar(male_positions, male_counts, width=0.4, label='Male Artists', color='darkcyan')
-
-#     plt.xticks(mid_positions, directors, rotation=45, ha='right')
-#     plt.ylabel('Number of Artworks')
-#     plt.title('Metropolitan Museum Highlights by Museum Director and Artist Gender')
-#     plt.legend()
-#     plt.show()
-
-
 def make_comparison_chart(harvard_dict, met_dict):
     '''
     Makes and displays bar chart comparing number of artworks by male and female artists
@@ -189,7 +149,7 @@ def make_comparison_chart(harvard_dict, met_dict):
     plt.savefig("comparison_bar_chart.png")
     plt.show()
 
-def save_data_to_file(data_dict, filename):
+def save_data_to_file(data_dict,  filename):
     '''
     Writes artist gender counts for each director to a txt file
 
@@ -198,6 +158,7 @@ def save_data_to_file(data_dict, filename):
         filename (str): name of txt file to write the data to
     '''
     with open(filename, 'w') as f:
+        f.write(f"Met Director Calculations\n")
         for director, counts in data_dict.items():
             f.write(f"{director}\n")
             f.write(f"  Male Artists: {counts['Male Artists']}\n")
@@ -213,11 +174,11 @@ def main():
     met_dict = get_data(conn, cur)
     harvard_dict = get_harvard_data(conn, cur)
 
-    make_total_gender_pie(met_dict)
+    # make_total_gender_pie(met_dict)
     # make_bar_chart(met_dict)
-    make_comparison_chart(harvard_dict, met_dict)
+    # make_comparison_chart(harvard_dict, met_dict)
 
-    # save_data_to_file(met_dict, 'met_calculations.txt')
+    save_data_to_file(met_dict, 'calculations.txt')
 
 if __name__ == '__main__':
     main()
