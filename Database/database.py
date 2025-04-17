@@ -57,10 +57,16 @@ def add_harvard_art_from_json(conn, cur, filename):
     with open(filename, 'r') as f:
         art = json.load(f)
 
+    cur.execute('''SELECT COUNT(*) FROM HarvardArt''')
+    num_of_art = cur.fetchone()[0]
+    print(f"Pieces of art in HarvardArt table of Art database: {num_of_art}")
+
     new_inserts = 0
     for piece in art:
-        if new_inserts >= 25:
-            break
+        
+        if num_of_art < 100:
+            if new_inserts >= 25:
+                break
         gender = piece['gender']
         gender_id = cur.execute(f'''SELECT id FROM Genders 
         WHERE gender=?''', (f"{gender}",)).fetchone()[0]
@@ -110,10 +116,16 @@ def add_met_art_from_json(conn, cur, filename):
     with open(filename, 'r') as file:
         content = json.load(file)
 
+    cur.execute('''SELECT COUNT(*) FROM MetArt''')
+    num_of_art = cur.fetchone()[0]
+    print(f"Pieces of art in MetArt table of Art database: {num_of_art}")
+
     new_inserts = 0
     for item in content:
-        if new_inserts >= 25:
-            break
+        
+        if num_of_art < 100:
+            if new_inserts >= 25:
+                break
         gender = item['artistGender']
         gender_id = cur.execute(f'''SELECT id FROM Genders 
         WHERE gender=?''', (f"{gender}",)).fetchall()
@@ -134,13 +146,13 @@ def main():
     create_harvard_directors_table(conn, cur)
     add_harvard_directors_from_json(conn, cur, "harvard_directors.json")
     create_harvard_art_table(conn, cur)
-    for i in range(33):
-        add_harvard_art_from_json(conn, cur, "harvard.json")
+    #for i in range(33): #get rid of loop
+    add_harvard_art_from_json(conn, cur, "harvard.json")
     create_met_directors_table(conn, cur)
     add_met_directors_from_json(conn, cur, "met_directors.json")
     create_met_art_table(conn, cur)
-    for i in range(4):
-        add_met_art_from_json(conn, cur, "met.json")
+    #for i in range(4): #get rid of loop
+    add_met_art_from_json(conn, cur, "met.json")
 
 if __name__ == "__main__":
     main()
