@@ -59,7 +59,6 @@ def add_harvard_art_from_json(conn, cur, filename):
 
     cur.execute('''SELECT COUNT(*) FROM HarvardArt''')
     num_of_art = cur.fetchone()[0]
-    print(f"Pieces of art in HarvardArt table of Art database: {num_of_art}")
 
     new_inserts = 0
     for piece in art:
@@ -81,6 +80,10 @@ def add_harvard_art_from_json(conn, cur, filename):
             new_inserts += 1
 
     conn.commit()
+
+    cur.execute('''SELECT COUNT(*) FROM HarvardArt''')
+    num_of_art = cur.fetchone()[0]
+    print(f"Pieces of art in HarvardArt table of Art database: {num_of_art}")
 
 def create_met_directors_table(conn, cur):
     '''Creates the MetDirectors table within the database using the input connection (conn) and cursor (cur)'''
@@ -118,7 +121,6 @@ def add_met_art_from_json(conn, cur, filename):
 
     cur.execute('''SELECT COUNT(*) FROM MetArt''')
     num_of_art = cur.fetchone()[0]
-    print(f"Pieces of art in MetArt table of Art database: {num_of_art}")
 
     new_inserts = 0
     for item in content:
@@ -138,6 +140,10 @@ def add_met_art_from_json(conn, cur, filename):
             new_inserts += 1
 
     conn.commit()
+
+    cur.execute('''SELECT COUNT(*) FROM MetArt''')
+    num_of_art = cur.fetchone()[0]
+    print(f"Pieces of art in MetArt table of Art database: {num_of_art}")
 
 def main():
     '''Sets up the database, adds all 5 tables and fills them with data from 4 JSON files'''
