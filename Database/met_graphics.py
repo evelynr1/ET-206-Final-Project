@@ -93,6 +93,14 @@ def get_harvard_data(conn, cur):
     return director_dict
 
 def make_total_gender_pie(director_dict):
+    '''
+    Makes and displays pie chart comparing number of artworks by male and female artists at Met Museum
+
+    Parameters:
+        director_dict (dict): dictionary with Met director names as keys and counts of male/female artworks as values
+
+    Chart gets saved as 'met_pie_chart.png'
+    '''
     total_male = 0
     total_female = 0
 
@@ -154,7 +162,8 @@ def save_data_to_file(data_dict1, data_dict2, filename):
     Writes artist gender counts for each director to a txt file
 
     Parameters:
-        data_dict (dict): dictionary of directors with counts of artworks by gender
+        data_dict1 (dict): dictionary of Met directors with counts of artworks by gender
+        data_dict2 (dict): dictionary of Harvard directors with counts of artworks by gender
         filename (str): name of txt file to write the data to
     '''
     with open(filename, 'w') as f:
