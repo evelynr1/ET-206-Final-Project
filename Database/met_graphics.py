@@ -174,6 +174,9 @@ def save_data_to_file(data_dict1, data_dict2, filename):
 
 
 def main(): 
+    '''Sets up connection to Art database, creates and saves ‘met_pie_chart.png’ and 'comparison_bar_chart.png'
+    and creates and saves calculations to 'calculations.txt'
+    '''
     dir = os.path.dirname(__file__)+ os.sep
     conn = sqlite3.connect(dir+'Art.db')
     cur = conn.cursor()

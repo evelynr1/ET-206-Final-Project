@@ -7,15 +7,16 @@ import regex as re
 def get_harvard_api_key(filename):
     '''Retrieves API key from file (so it is not shared publicly)
     
-    Args: filename where the API key is stored
+    Args: filename (str): text file where the API key is stored 
     
-    Output: api_key as a string
+    Output: api_key (str): the API key for the Harvard Art Museums API
     '''
     # source_dir = os.path.dirname(__file__)
     # full_path = os.path.join(source_dir, filename)
     # with open(full_path) as f:
     with open(filename) as f:
-        return f.read()
+        api_key = f.read()
+    return api_key
 
 ##This function did not add meaningful data to the database
 # def get_verification_level(art_id, harvard_api_key):
@@ -33,7 +34,7 @@ def get_art_data(harvard_api_key):
     including objectID, accession year, and artist gender
 
     Args:
-        harvard_api_key (str): name of the file to write data to
+        harvard_api_key (str): API key for the Harvard Art Museums API
     
     Returns:
         art_list (list): list of dictionaries where each dictionary represents one piece of art
@@ -119,8 +120,8 @@ def write_data_to_file(json_data, filename):
     Saves data to a JSON file
 
     Args:
-        filename (str): name of the file to write data to
         json_data (dict): data to be written into JSON file
+        filename (str): name of the file to write data to
     '''
     with open(filename, 'w') as outfile:
         json.dump(json_data, outfile, indent = 4)

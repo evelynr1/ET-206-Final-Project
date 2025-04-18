@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def art_by_accession_year(conn, cur):
-    '''Creates a pie chart of number of pieces of art by gender at the Harvard Art Museums
+    '''Creates and saves a pie chart ('harvard_art_by_accession_year.png') of number of pieces of art by gender at the Harvard Art Museums
     using data from the HarvardArt database
     
     Args:
@@ -45,7 +45,7 @@ def art_by_accession_year(conn, cur):
     return art_count_by_year
 
 def art_by_gender(conn, cur):
-    '''Creates a line plot of amount of art by accession year
+    '''Creates and saves a line plot ('harvard_art_by_gender.png') of amount of art by accession year
     using data from the HarvardArt database
     
     Args:
@@ -55,7 +55,7 @@ def art_by_gender(conn, cur):
     Output:
         (art_by_women, art_by_men_or_unknown) (tuple): tuple containing art count by gender
             art_by_women (tuple): (id of gender in database, count of art by women)
-            art_by_men_or_unknown (tuple): (id of gender in database, count of art by men/unkown)
+            art_by_men_or_unknown (tuple): (id of gender in database, count of art by men/unknown)
     '''
     #get the number of pieces of art by gender
     cur.execute('''SELECT Genders.id, COUNT(*)
@@ -93,8 +93,19 @@ def art_by_gender(conn, cur):
     return (art_by_women, art_by_men_or_unknown)
     
 
-def write_calulations(art_by_year, art_by_women, art_by_men_or_unknown):
-    with open('calculations.txt', 'a') as f:
+def write_calulations(art_by_year, art_by_women, art_by_men_or_unknown, filename):
+    '''Appends counts of art by accession year and art by gender for the harvard Art Museums to text file
+    
+    Args:
+        art_by_year (dict): dictionary containing art count by accession year (ascending by chronological order)
+        art_by_women (tuple): (id of gender in Genders table of database, count of art by women)
+        art_by_men_or_unknown (tuple): (id of gender in database, count of art by men/unknown)
+        filename (str): name of text file to write the calculations to
+    
+    Output:
+        None
+    '''
+    with open(filename, 'a') as f:
         f.write(f"Harvard Art Museums Calculations\n")
         f.write("\n")
         f.write(f"Harvard Art by Accession Year\n")
@@ -106,11 +117,11 @@ def write_calulations(art_by_year, art_by_women, art_by_men_or_unknown):
         f.write(f"    Male Artists: {art_by_men_or_unknown[1]}\n")
         f.write(f"    Female Artists: {art_by_women[1]}\n")
         f.write("\n")
-    print("works")
-    pass
-    
 
 def main(): 
+    '''Sets up connection to Art database, creates and saves ‘harvard_art_by_accession_year.png’ and 'harvard_art_by_gender.png'
+    and appends calculations to 'calculations.txt' which is created in met_graphics.py
+    '''
     # create the connection and cursor for the Art database
     dir = os.path.dirname(__file__)+ os.sep
     conn = sqlite3.connect(dir+'Art.db')
@@ -118,7 +129,7 @@ def main():
 
     art_by_year = art_by_accession_year(conn, cur)
     art_by_women, art_by_men_or_unknown = art_by_gender(conn, cur)
-    write_calulations(art_by_year, art_by_women, art_by_men_or_unknown)
+    write_calulations(art_by_year, art_by_women, art_by_men_or_unknown, 'calculations.txt')
 
 
 if __name__ == '__main__':

@@ -3,14 +3,14 @@ import json
 import sqlite3
 
 def set_up_database(db_name):
-    '''Sets up the database. Returns the connection (conn) and cursor (cur)'''
+    '''Sets up the database with the name db_name. Returns the connection (conn) and cursor (cur)'''
     path = os.path.dirname(os.path.abspath(__file__))
     conn = sqlite3.connect(path + "/" + db_name)
     cur = conn.cursor()
     return(conn, cur)
 
 def create_gender_table(conn, cur):
-    '''Creates the Genders table within the database using the input connection (conn) and cursor (cur)'''
+    '''Creates and fills the Genders table within the database using the input connection (conn) and cursor (cur)'''
     genders = ['Female', 'Male/Unknown']
     cur.execute('''CREATE TABLE IF NOT EXISTS Genders
     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -34,6 +34,10 @@ def create_harvard_directors_table(conn, cur):
     conn.commit()
 
 def add_harvard_directors_from_json(conn, cur, filename):
+    '''Fills the HarvardDirectors table in the database 
+    with data from the JSON file of filename (str)
+    using the input connection (conn) and cursor (cur)
+    '''
     with open(filename, 'r') as file:
         content = json.load(file)
 
@@ -54,6 +58,10 @@ def create_harvard_art_table(conn, cur):
     conn.commit()
 
 def add_harvard_art_from_json(conn, cur, filename):
+    '''Fills the HarvardArt table in the database 
+    with data from the JSON file of filename (str)
+    using the input connection (conn) and cursor (cur)
+    '''
     with open(filename, 'r') as f:
         art = json.load(f)
 
@@ -96,7 +104,10 @@ def create_met_directors_table(conn, cur):
     conn.commit()
 
 def add_met_directors_from_json(conn, cur, filename):
-
+    '''Fills the MetDirectors table in the database     
+    with data from the JSON file of filename (str)
+    using the input connection (conn) and cursor (cur)
+    '''
     with open(filename, 'r') as file:
         content = json.load(file)
 
@@ -116,6 +127,10 @@ def create_met_art_table(conn, cur):
     conn.commit()
 
 def add_met_art_from_json(conn, cur, filename):
+    '''Fills the MetArt table in the database 
+    with data from the JSON file of filename (str)
+    using the input connection (conn) and cursor (cur)
+    '''
     with open(filename, 'r') as file:
         content = json.load(file)
 

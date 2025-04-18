@@ -7,7 +7,7 @@ def get_objectIDs():
     Gets a list of objectIDs from the Met Museum API for highlighted objects
 
     Returns:
-        list: objectIDs (integers) representing highlighted artworks
+        objectIDs (list): a list of objectIDs (integers) representing highlighted artworks
     '''
 
     base_url = 'https://collectionapi.metmuseum.org/public/collection/v1/search?'
@@ -19,7 +19,8 @@ def get_objectIDs():
     response = requests.get(base_url, params=params)
     data = response.json()
     # print(len(data['objectIDs']))
-    return data.get("objectIDs", [])  
+    objectIDs = data.get("objectIDs", [])
+    return objectIDs
 
 def get_object_details(objectIDs):
     '''
@@ -30,7 +31,7 @@ def get_object_details(objectIDs):
         objectIDs (list): a list of object IDs to retrieve details for
 
     Returns:
-        list: a list of dictionaries containing objectID, artistGender, and accessionYear
+        result (list): a list of dictionaries containing objectID, artistGender, and accessionYear
     '''
     base_url = f'https://collectionapi.metmuseum.org/public/collection/v1/objects/'
     result = []
