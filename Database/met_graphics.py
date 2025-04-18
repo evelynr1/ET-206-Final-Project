@@ -94,10 +94,11 @@ def get_harvard_data(conn, cur):
 
 def make_total_gender_pie(director_dict):
     '''
-    Makes and displays pie chart comparing number of artworks by male and female artists at Met Museum
+    Makes, displays, and saves pie chart (‘met_pie_chart.png’) 
+    comparing number of artworks by male and female artists at Met Museum
 
     Parameters:
-        director_dict (dict): dictionary with Met director names as keys and counts of male/female artworks as values
+        director_dict (dict): dictionary with Met director names as keys and counts of male and female artworks as values
 
     Chart gets saved as 'met_pie_chart.png'
     '''
@@ -121,12 +122,12 @@ def make_total_gender_pie(director_dict):
 
 def make_comparison_chart(harvard_dict, met_dict):
     '''
-    Makes and displays bar chart comparing number of artworks by male and female artists
+    Makes, displays, and saves bar chart (‘comparison_bar_chart.png’) comparing number of artworks by male and female artists
     between the Harvard and Met museums
 
     Parameters:
-        harvard_dict (dict): dictionary with Harvard director names as keys and counts of male/female artworks as values
-        met_dict (dict): dictionary with Met director names as keys and counts of male/female artworks as values
+        harvard_dict (dict): dictionary with Harvard director names as keys and counts of male and female artworks as values
+        met_dict (dict): dictionary with Met director names as keys and counts of male and female artworks as values
 
     Chart gets saved as 'comparison_bar_chart.png'
     '''

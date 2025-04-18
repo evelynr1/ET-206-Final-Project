@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def art_by_accession_year(conn, cur):
-    '''Creates and saves a pie chart ('harvard_art_by_accession_year.png') of number of pieces of art by gender at the Harvard Art Museums
+    '''Creates, displays, and saves a pie chart ('harvard_art_by_accession_year.png') of number of pieces of art by gender at the Harvard Art Museums
     using data from the HarvardArt database
     
     Args:
@@ -45,7 +45,7 @@ def art_by_accession_year(conn, cur):
     return art_count_by_year
 
 def art_by_gender(conn, cur):
-    '''Creates and saves a line plot ('harvard_art_by_gender.png') of amount of art by accession year
+    '''Creates, displays, and saves a line plot ('harvard_art_by_gender.png') of amount of art by accession year
     using data from the HarvardArt database
     
     Args:
